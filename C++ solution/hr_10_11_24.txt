@@ -1,0 +1,14 @@
+string balancedSums(vector<int> arr) {
+    int i = 0, j = arr.size()-1, leftsum = arr[i], rightsum = arr[j];
+    while(i < j){
+        if(leftsum < rightsum){
+            i++;
+            leftsum += arr[i];
+        }else{
+            j--;
+            rightsum += arr[j];
+        }
+    }
+    if(leftsum == rightsum) return "YES";
+    return "NO";
+}
