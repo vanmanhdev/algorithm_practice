@@ -1,0 +1,40 @@
+public class Solution {
+public double MaxAverageRatio(int[][] classes, int k)
+{
+    // Priority Queue to store the classes based on the max gain in pass ratio
+    var maxHeap = new PriorityQueue<(double, int, int), double>(Comparer<double>.Create((a, b) => b.CompareTo(a)));
+
+    // Calculate the gain for adding a student to a class
+    double Gain(int passed, int total)
+    {
+        return (double)(passed + 1) / (total + 1) - (double)passed / total;
+    }
+
+    // Initialize the heap
+    foreach (var cls in classes)
+    {
+        int passed = cls[0], total = cls[1];
+        maxHeap.Enqueue((Gain(passed, total), passed, total), Gain(passed, total));
+    }
+
+    // Add k extra students
+    for (int i = 0; i < k; i++)
+    {
+        var (gain, passed, total) = maxHeap.Dequeue();
+        passed++;
+        total++;
+        maxHeap.Enqueue((Gain(passed, total), passed, total), Gain(passed, total));
+    }
+
+    // Calculate the total average
+    double totalAverage = 0.0;
+    while (maxHeap.Count > 0)
+    {
+        var (_, passed, total) = maxHeap.Dequeue();
+        totalAverage += (double)passed / total;
+    }
+
+    return totalAverage / classes.Length;
+}
+
+}

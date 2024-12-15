@@ -1,0 +1,12 @@
+    public static string counterGame(long n)
+    {
+        int operations = 0;
+        while(n>1){
+            if((n&(n-1))==0){
+                n/=2;
+            }
+            else n -= 1L << (int)Math.Log(n,2);
+            operations++;
+        }
+        return (operations%2==1) ? "Louise" : "Richard";
+    }
